@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Transport Cost Calculator</string>
+    <string name="title_activity_main">Transport Cost Calculator</string>
+    <string name="package_name">com.appnamin.app</string>
+    <string name="custom_url_scheme">com.appnamin.app</string>
+</resources>
