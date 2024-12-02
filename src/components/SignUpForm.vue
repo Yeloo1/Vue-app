@@ -1,6 +1,6 @@
 <template>
   <div class="signup-container">
-    <h1 class="title">Sign up</h1>
+    <h1 class="title">Sign up11</h1>
     
     <form class="signup-form" @submit.prevent="signUp">
       <!-- User Input -->
