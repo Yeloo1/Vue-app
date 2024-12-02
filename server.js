@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const { db } = require("./firebase"); // Correct Firebase Admin import
 const app = express();
+
+// Use Render's dynamic port or fall back to 5002 for local dev
 const PORT = process.env.PORT || 5002;
 
 // Enable CORS and allow specific origins
@@ -46,7 +48,7 @@ app.post("/signup", async (req, res) => {
 
 // Root route
 app.get("/", (req, res) => {
-  res.send("Welcome to server of Transport Cost Calculator ! The backend is running.");
+  res.send("Welcome to server of Transport Cost Calculator! The backend is running.");
 });
 
 // Start server

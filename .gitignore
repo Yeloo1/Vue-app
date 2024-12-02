@@ -21,3 +21,5 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
+# Firebase service account keys (shouldn't be tracked)
+service-account-key2.json

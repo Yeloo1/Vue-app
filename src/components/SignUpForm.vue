@@ -63,14 +63,15 @@ export default {
 
         console.log('User created:', user);  // Debugging: log user credentials
 
-        // Step 2: Send user data to backend to store in Firestore
-        const response = await axios.post("http://localhost:5002/signup", {
-          email: this.email,
-          phoneNumber: this.phoneNumber,
-          userId: user.uid,  // Send user ID to backend
-        });
+ // Step 2: Send user data to backend to store in Firestore
+const response = await axios.post("https://vue-app-7dwt.onrender.com/signup", {
+  email: this.email,
+  phoneNumber: this.phoneNumber,
+  userId: user.uid,  // Send user ID to backend
+});
 
-        console.log('Backend response:', response);  // Log the response from backend
+console.log('Backend response:', response);  // Log the response from backend
+
 
         // Step 3: Handle successful sign-up
         if (response.status === 201) {
