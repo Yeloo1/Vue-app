@@ -4,54 +4,65 @@ const admin = require("firebase-admin");
 const { db } = require("./firebase"); // Correct Firebase Admin import
 const app = express();
 
+// Initialize Firebase Admin SDK with your service account credentials
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(), // Or use service account credentials
+});
+
 // Use Render's dynamic port or fall back to 5002 for local dev
 const PORT = process.env.PORT || 5002;
 
-// Initialize Firebase Admin SDK (Ensure you have the correct path to your service account key)
-const serviceAccount = require("./path/to/service-account-key.json");  // Replace with actual path
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
-
-
 // Enable CORS and allow specific origins
 app.use(cors({
-  origin: "https://yeloo1.github.io",  // Your frontend URL (Make sure it's correct)
+  origin: "https://yeloo1.github.io/Vue-app/#/",  // Add your frontend domain here
   methods: ["GET", "POST"],
 }));
 
 // Middleware to parse JSON requests
-app.use(express.json()); // This is essential for parsing JSON bodies in POST requests
+app.use(express.json());
 
-// Signup route
-app.post("/signup", async (req, res) => {
-  const { email, phoneNumber, userId, idToken } = req.body;  // Expecting idToken from frontend
+// Firebase ID token verification middleware
+async function verifyIdToken(req, res, next) {
+  const idToken = req.body.idToken;
+
+  if (!idToken) {
+    return res.status(403).json({ message: "No ID token provided" });
+  }
+
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    req.user = decodedToken;  // Store user data in request object for further use
+    next();  // Proceed to the next middleware or route handler
+  } catch (error) {
+    console.error("Error verifying ID token:", error);
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+}
+
+// Signup route with token verification
+app.post("/signup", verifyIdToken, async (req, res) => {
+  const { email, phoneNumber, userId } = req.body;
 
   // Check if all required fields are present
-  if (!email || !phoneNumber || !userId || !idToken) {
+  if (!email || !phoneNumber || !userId) {
     return res.status(400).json({ message: "Missing fields" });
   }
 
   try {
-    // Step 1: Verify the Firebase ID token
-    const decodedToken = await admin.auth().verifyIdToken(idToken);
-    const user = await admin.auth().getUser(decodedToken.uid); // Get user info from token
+    // Correct Firestore reference using Firebase Admin SDK
+    const userRef = db.collection("users").doc(userId);
 
-    // Step 2: Add user data to Firestore
-    const userRef = db.collection("users").doc(userId); // Use .collection().doc() for Firestore
+    // Add user data to Firestore
     await userRef.set({
       email,
       phoneNumber,
-      createdAt: new Date(), // Add a creation date to the record
+      createdAt: new Date(),
     });
 
     // Respond with success message
     res.status(201).json({ message: "User created successfully!" });
   } catch (error) {
-    // Log the error details to the console
     console.error("Error creating user:", error);
-
-    // Respond with a detailed error message in the response body
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
