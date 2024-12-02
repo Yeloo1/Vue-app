@@ -8,9 +8,10 @@ const PORT = process.env.PORT || 5002;
 
 // Enable CORS and allow specific origins
 app.use(cors({
-  origin: "*", // Frontend running on port 8080
-  methods: ["GET", "POST"], // Allow only specific methods
+  origin: "https://yeloo1.github.io/Vue-app/#/signup",  // Add your frontend domain here
+  methods: ["GET", "POST"],
 }));
+
 
 // Middleware to parse JSON requests
 app.use(express.json()); // This is essential for parsing JSON bodies in POST requests
