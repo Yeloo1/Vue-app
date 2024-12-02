@@ -67,12 +67,12 @@ export default {
         const idToken = await getIdToken(user);  // Get ID token for authentication
 
         // Step 3: Send user data and ID token to backend to store in Firestore
-        const response = await axios.post("https://vue-app-7dwt.onrender.com/signup", {
-          email: this.email,
-          phoneNumber: this.phoneNumber,
-          userId: user.uid,  // Send user ID to backend
-          idToken: idToken,  // Include ID token here
-        });
+       const response = await axios.post("https://vue-app-7dwt.onrender.com:10000/signup", {
+  email: this.email,
+  phoneNumber: this.phoneNumber,
+  userId: user.uid,  // Send user ID to backend
+});
+
 
         console.log('Backend response:', response);  // Log the response from backend
 
