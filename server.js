@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const { db } = require("./firebase"); // Correct Firebase Admin import
 const app = express();
-const PORT = 5002;
+const PORT = process.env.PORT || 5002;
 
 // Enable CORS and allow specific origins
 app.use(cors({
@@ -51,5 +51,5 @@ app.get("/", (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 import SignUpForm from './components/SignUpForm.vue';  // Path for SignUp form
 import Login from './components/Login.vue';  // Path for Login form
 import TransportationChoice from './components/TransportationChoice.vue';  // Path for Transportation Choice form
@@ -11,7 +11,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHashHistory(),  // Switch to hash history mode
   routes,
 });
 
