@@ -1,5 +1,5 @@
 const admin = require("firebase-admin");
-const serviceAccount = require("./service-account-key2.json"); // Adjust the path
+const serviceAccount = require("./service-account-key1.json"); // Adjust the path
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
