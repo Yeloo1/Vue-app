@@ -68,9 +68,6 @@ const response = await axios.post("https://vue-app-7dwt.onrender.com/signup", {
   email: this.email,
   phoneNumber: this.phoneNumber,
   userId: user.uid,  // Send user ID to backend
-}).catch((error) => {
-  console.error("API Error:", error);
-  alert("Error during sign-up. Please try again.");
 });
 
 
