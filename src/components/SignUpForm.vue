@@ -42,7 +42,7 @@
 
 <script>
 import { auth } from "../firebase";  // Import Firebase Authentication
-import { createUserWithEmailAndPassword } from "firebase/auth";  // Firebase Auth methods
+import { createUserWithEmailAndPassword, getIdToken } from "firebase/auth";  // Firebase Auth methods
 import axios from "axios";  // Axios for backend requests
 
 export default {
@@ -63,19 +63,20 @@ export default {
 
         console.log('User created:', user);  // Debugging: log user credentials
 
- // Step 2: Send user data to backend to store in Firestore
-const response = await axios.post("https://vue-app-7dwt.onrender.com/signup", {
-  email: this.email,
-  phoneNumber: this.phoneNumber,
-  userId: user.uid,  // Send user ID to backend
-});
+        // Step 2: Get the Firebase ID Token
+        const idToken = await getIdToken(user);  // Get ID token for authentication
 
+        // Step 3: Send user data and ID token to backend to store in Firestore
+        const response = await axios.post("https://vue-app-7dwt.onrender.com/signup", {
+          email: this.email,
+          phoneNumber: this.phoneNumber,
+          userId: user.uid,  // Send user ID to backend
+          idToken: idToken,  // Include ID token here
+        });
 
+        console.log('Backend response:', response);  // Log the response from backend
 
-console.log('Backend response:', response);  // Log the response from backend
-
-
-        // Step 3: Handle successful sign-up
+        // Step 4: Handle successful sign-up
         if (response.status === 201) {
           alert("Sign-up successful!");
           this.$router.push("/login");
@@ -93,6 +94,7 @@ console.log('Backend response:', response);  // Log the response from backend
   },
 };
 </script>
+
 
 
 
